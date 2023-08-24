@@ -1,3 +1,5 @@
+#include "../include/help.h"
+
 class Solution {
 public:
   int minPathSum(vector<vector<int>> &grid) {
