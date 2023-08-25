@@ -1,8 +1,15 @@
 #include "../include/help.h"
 
 /*
+    dfs 三个步骤:
+    (1) dfs 模板参数
+    (2) dfs 终止条件
+    (3) dfs 搜索过程
+*/
+
+/*
    本题需要注意的是如何做去重操作
-   TODO：看 沉思录 中两种去重操作
+   TODO：看 沉思录 中两种去重操作 再做几道 dfs 回溯
 */
 
 class Solution {
