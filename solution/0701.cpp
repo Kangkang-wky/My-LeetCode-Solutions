@@ -18,6 +18,7 @@ public:
 };
 
 // 递归写法，个人之前习惯的递归函数无返回值
+// TODO 写个二叉树插入的模板替换一下之前的
 
 class Solution2 {
 private:
@@ -40,3 +41,5 @@ public:
     return root;
   }
 };
+
+// TODO:有空写一个迭代版本的插入
