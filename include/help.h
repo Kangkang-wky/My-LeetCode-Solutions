@@ -2,6 +2,7 @@
 #include <iostream>
 #include <queue>
 #include <set>
+#include <stack>
 #include <vector>
 
 // Definition for a list node.
