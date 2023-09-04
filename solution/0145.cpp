@@ -50,6 +50,8 @@ public:
       if (node != nullptr) {
         st.pop();
 
+        // 后序遍历: 左右中,在栈中倒序放置
+        // node是已经压入过栈的节点即已经遍历过的节点,故压入一个null用于下次输出
         st.push(node); // 中
         st.push(nullptr);
 
