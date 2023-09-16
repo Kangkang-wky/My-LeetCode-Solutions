@@ -41,6 +41,7 @@ public:
 
     TreeNode *left = node->left;
     TreeNode *right = node->right;
+    // 分别检查左右两边子树的深度
     int left_depth = 0, right_depth = 0;
     while (left) {
       left = left->left;
@@ -52,9 +53,11 @@ public:
     }
 
     // 检验是否为满二叉树, 满二叉树
+    // 若为满二叉树采用满二叉树的公式计算
     if (left_depth == right_depth) {
       return (2 << left_depth) - 1;
     }
+    // 若非满二叉树采用递归计算
     return traversal(node->left) + traversal(node->right) + 1;
   }
 
