@@ -35,3 +35,44 @@ public:
 };
 
 // 回溯法完整模板总结
+// 二叉树树形数据结构回溯模板总结
+class Solution2 {
+private:
+  // 先序遍历 dfs
+  void dfs(TreeNode *node, vector<int> &path, vector<string> &res) {
+    if (node == nullptr)
+      return;
+    path.emplace_back(node->val);
+    // 终止条件 处理后 return
+    if (node->left == NULL && node->right == NULL) {
+      string record;
+      for (size_t i = 0; i < path.size(); i++) {
+        if (i == 0) {
+          record += to_string(path[i]);
+        } else {
+          record += "->";
+          record += to_string(path[i]);
+        }
+      }
+      res.push_back(record);
+      return;
+    }
+    // 非终止 单层逻辑
+    if (node->left) {
+      dfs(node->left, path, res); // 递归
+      path.pop_back();            // 回溯
+    }
+    if (node->right) {
+      dfs(node->right, path, res); // 递归
+      path.pop_back();             // 回溯
+    }
+  }
+
+public:
+  vector<string> binaryTreePaths(TreeNode *root) {
+    vector<string> res;
+    vector<int> path;
+    dfs(root, path, res);
+    return res;
+  }
+};
