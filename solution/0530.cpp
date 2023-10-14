@@ -30,7 +30,7 @@ public:
 };
 
 // 第二种做法是直接用一个节点来记录前驱以及后继
-
+// 中序遍历
 class Solution2 {
 private:
   TreeNode *pre = nullptr;
@@ -41,13 +41,13 @@ public:
     if (node == nullptr) {
       return;
     }
-    dfs(node->left);
+    dfs(node->left); // 左
     // 防御性编程
-    if (pre != nullptr) {
+    if (pre != nullptr) { //  中
       min_num = std::min(min_num, node->val - pre->val);
     }
-    pre = node;
-    dfs(node->right);
+    pre = node;       // 中序遍历, 记录前驱节点 pre
+    dfs(node->right); // 右
   }
   int getMinimumDifference(TreeNode *root) {
     dfs(root);
