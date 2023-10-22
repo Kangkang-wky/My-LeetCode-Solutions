@@ -1,3 +1,6 @@
+#ifndef _HELP_H_
+#define _HELP_H_
+
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -49,4 +52,6 @@ public:
 
 using namespace std;
 
-// 一般不要使用
+// 一般不要使用, 这里只是为了刷 leetcode 方便
+
+#endif
