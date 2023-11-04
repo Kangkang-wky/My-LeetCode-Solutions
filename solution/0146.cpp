@@ -64,3 +64,86 @@ private:
   unordered_map<int, list<Node>::iterator>
       hashmap; // hashmap 存储 key 和 LRU队列的迭代器
 };
+
+class LRUCache2 {
+  // key value 双向链表
+  struct KV_list {
+    int _key;
+    int _val;
+    KV_list *_next;
+    KV_list *_pre;
+  };
+
+  // 定义一个带头节点的双向链表
+  KV_list *dummy;
+  int maxSize; // 最大缓存数量
+  int nodeNum; // 当前缓存中的节点数量
+  // 定义哈希表，key是int，val是节点
+  unordered_map<int, KV_list *> hashmap;
+
+public:
+  LRUCache2(int capacity) : dummy(new KV_list), maxSize(capacity), nodeNum(0) {
+    // dummy 的 next 和 prev 指针都指向自身
+    // 当 cache 为空时，dummy 既是头节点也是尾节点
+    dummy->_next = dummy;
+    dummy->_pre = dummy;
+  }
+
+  int get(int key) {
+    // 如果找到对应节点
+    if (hashmap.find(key) != hashmap.end()) {
+      // hash 表中找到对应的节点, 从而得到其在双向链表上的指针
+      KV_list *node = hashmap[key];
+      // 在双向链表中移除当前 node
+      node->_pre->_next = node->_next;
+      node->_next->_pre = node->_pre;
+      // 将当前 node 放到双向链表的头部
+      // 此时 node 还是放在作为 hashmap 中 key-value 的 value 值, 没有发生更改
+      insert_head(node);
+      return node->_val;
+    }
+    return -1;
+  }
+  // 将放置队首放到这个函数下面
+  void put(int key, int value) {
+    // 检查是否存在对应键值
+    if (hashmap.find(key) != hashmap.end()) {
+      hashmap[key]->_val = value;
+      get(key);
+    }
+    // 不存在
+    else {
+      // 缓存未满, 相对容易
+      if (nodeNum < maxSize) {
+        nodeNum++;
+        KV_list *node = new KV_list;
+        node->_key = key;
+        node->_val = value;
+        hashmap[key] = node;
+
+        insert_head(node);
+      }
+      // 缓存满, 删除 LRU队列中最后一个节点
+      else {
+        // 取 LRU 队列中最后一个节点, 哈希表中删除
+        KV_list *node = dummy->_pre;
+        hashmap.erase(node->_key);
+
+        // 更新 hash 表, 并修改当前 node 的值, get 将其插入到正确的位置
+        hashmap[key] = node;
+        node->_key = key;
+        node->_val = value;
+        get(key);
+      }
+    }
+  }
+
+private:
+  // 将 node 节点插入到 head 节点的下一个
+  void insert_head(KV_list *node) {
+    node->_next = dummy->_next;
+    node->_pre = dummy;
+    dummy->_next->_pre = node;
+    dummy->_next = node;
+  }
+};
