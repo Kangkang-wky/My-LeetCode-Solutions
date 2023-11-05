@@ -21,6 +21,9 @@
 // note: 注意 LRU队列中不能只存 value, 当队列容量已经满的时候, 需要删除队尾,
 // 同时要删除哈希表中对应的 key, 而目前只有 哈希表指向双向链表迭代器
 
+// 这种哈希表 + 双向链表的方式需要考虑清楚, 每一个操作对于 hashmap 以及
+// doubleList 是否都需要更新
+
 // list 效率太低, 可以自己实现一版双向链表
 class LRUCache1 {
 public:
@@ -76,27 +79,118 @@ class LRUCache2 {
 
   // 定义一个带头节点的双向链表
   KV_list *dummy;
-  int maxSize; // 最大缓存数量
-  int nodeNum; // 当前缓存中的节点数量
-  // 定义哈希表，key是int，val是节点
+  int maxSize;
+  int nodeNum;
+  // 定义哈希表，key是int，val是双向链表的指针
   unordered_map<int, KV_list *> hashmap;
 
 public:
   LRUCache2(int capacity) : dummy(new KV_list), maxSize(capacity), nodeNum(0) {
-    // dummy 的 next 和 prev 指针都指向自身
-    // 当 cache 为空时，dummy 既是头节点也是尾节点
+    // 带头节点的双向链表初始化
     dummy->_next = dummy;
     dummy->_pre = dummy;
   }
-
+  // 在哈希表中是否存在 key, 通过哈希表访问双向链表, 再得到 value 值
   int get(int key) {
-    // 如果找到对应节点
+    // 哈希表中找到
     if (hashmap.find(key) != hashmap.end()) {
-      // hash 表中找到对应的节点, 从而得到其在双向链表上的指针
+      KV_list *node = hashmap[key];
+
+      // 在双向链表中移除当前 node
+      node->_pre->_next = node->_next;
+      node->_next->_pre = node->_pre;
+
+      // 将当前 node 放到双向链表的头部
+      // 此时 node 还是放在作为 hashmap 中 key-value 的 value 值, 没有发生更改
+      insert_head(node);
+
+      return node->_val;
+    }
+    return -1;
+  }
+  // 将放置队首放到这个函数下面
+  void put(int key, int value) {
+    // 检查是否存在对应键值
+    if (hashmap.find(key) != hashmap.end()) {
+      // 更新双向链表中的 value 值
+      hashmap[key]->_val = value;
+      // 双向链表中移除当前, 并放到头节点, 此时哈希表不需要更新
+      get(key);
+    }
+    // 不存在
+    else {
+      // 缓存未满, 相对容易
+      if (nodeNum < maxSize) {
+        nodeNum++;
+        KV_list *node = new KV_list;
+        node->_key = key;
+        node->_val = value;
+
+        // 更新哈希表
+        hashmap[key] = node;
+
+        // 更新双向链表, 直接插入到头即可
+        insert_head(node);
+      }
+      // 缓存满, 删除 LRU队列中最后一个节点
+      else {
+        // 通过双向链表头节点的方式来找到 LRU 最后一个节点
+        // 更新哈希表
+        KV_list *node = dummy->_pre;
+        hashmap.erase(node->_key);
+
+        // 更新 hash 表, 并修改当前 node 的值, get 将其插入到正确的位置
+        hashmap[key] = node;
+        node->_key = key;
+        node->_val = value;
+
+        // 更新双向链表, 双向链表中移除当前, 并放到头节点
+        get(key);
+      }
+    }
+  }
+
+private:
+  // 将 node 节点插入到 head 节点的下一个
+  void insert_head(KV_list *node) {
+    node->_next = dummy->_next;
+    node->_pre = dummy;
+    dummy->_next->_pre = node;
+    dummy->_next = node;
+  }
+};
+
+class LRUCache3 {
+  // key value 双向链表
+  struct KV_list {
+    int _key;
+    int _val;
+    KV_list *_next;
+    KV_list *_pre;
+  };
+
+  // 定义一个带头节点的双向链表
+  KV_list *dummy;
+  int maxSize;
+  int nodeNum;
+  // 定义哈希表，key是int，val是双向链表的指针
+  unordered_map<int, KV_list *> hashmap;
+
+public:
+  LRUCache3(int capacity) : dummy(new KV_list), maxSize(capacity), nodeNum(0) {
+    // 带头节点的双向链表初始化
+    dummy->_next = dummy;
+    dummy->_pre = dummy;
+  }
+  // 在哈希表中是否存在 key, 通过哈希表访问双向链表, 再得到 value 值
+  int get(int key) {
+    // 哈希表中找到
+    if (hashmap.find(key) != hashmap.end()) {
       KV_list *node = hashmap[key];
       // 在双向链表中移除当前 node
       node->_pre->_next = node->_next;
       node->_next->_pre = node->_pre;
+
       // 将当前 node 放到双向链表的头部
       // 此时 node 还是放在作为 hashmap 中 key-value 的 value 值, 没有发生更改
       insert_head(node);
@@ -108,8 +202,15 @@ public:
   void put(int key, int value) {
     // 检查是否存在对应键值
     if (hashmap.find(key) != hashmap.end()) {
+      // 更新双向链表中的 key value 值
       hashmap[key]->_val = value;
-      get(key);
+
+      // 更新双向链表
+      KV_list *node = hashmap[key];
+      node->_pre->_next = node->_next;
+      node->_next->_pre = node->_pre;
+
+      insert_head(node);
     }
     // 不存在
     else {
@@ -119,21 +220,29 @@ public:
         KV_list *node = new KV_list;
         node->_key = key;
         node->_val = value;
-        hashmap[key] = node;
 
+        // 更新 hashmap
+        hashmap[key] = node;
+        // 更新双向链表
         insert_head(node);
       }
       // 缓存满, 删除 LRU队列中最后一个节点
       else {
-        // 取 LRU 队列中最后一个节点, 哈希表中删除
+        // 通过双向链表头节点的方式来找到 LRU 最后一个节点
+        // 更新哈希表
         KV_list *node = dummy->_pre;
         hashmap.erase(node->_key);
 
         // 更新 hash 表, 并修改当前 node 的值, get 将其插入到正确的位置
-        hashmap[key] = node;
         node->_key = key;
         node->_val = value;
-        get(key);
+        hashmap[key] = node;
+
+        // 更新双向链表
+        node->_pre->_next = node->_next;
+        node->_next->_pre = node->_pre;
+
+        insert_head(node);
       }
     }
   }
