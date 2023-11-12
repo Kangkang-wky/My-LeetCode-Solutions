@@ -5,9 +5,11 @@
 #include <iostream>
 #include <limits>
 #include <list>
+#include <memory>
 #include <queue>
 #include <set>
 #include <stack>
+#include <string>
 #include <tuple>
 #include <unordered_map>
 #include <unordered_set>
