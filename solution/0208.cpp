@@ -12,7 +12,7 @@ private:
   Trie1 *next[26];
 
 public:
-  // 初始化所有链接置为 nullptr
+  // 初始化所有链接置为 nullptr, is_word 都为 false
   Trie1() {
     is_word = false;
     for (size_t i = 0; i < 26; i++) {
@@ -57,24 +57,8 @@ public:
 // modern c++ version
 // string_view & unique_ptr
 class Trie2 {
-public:
-  void insert(string_view word) {
-    auto *cur = findNode(word, /*insert=*/true);
-    cur->is_word = true;
-  }
-
-  bool search(string_view word) {
-    auto *cur = findNode(word);
-    return cur && cur->is_word;
-  }
-
-  bool startsWith(string_view prefix) {
-    auto *cur = findNode(prefix);
-    return !!cur;
-  }
-
 private:
-  // unique_ptr 默认初始化为 nullptr
+  // unique_ptr 默认初始化为 nullptr, is_word 都初始化为 false
   unique_ptr<Trie2> children[26];
   bool is_word = false;
 
@@ -96,5 +80,24 @@ private:
       node = node->children[index].get();
     }
     return node;
+  }
+
+public:
+  void insert(string_view word) {
+    auto *cur = findNode(word, /* insert type */ true);
+    // 插入后, 在终点 word 上标记 true
+    cur->is_word = true;
+  }
+
+  bool search(string_view word) {
+    auto *cur = findNode(word, /* insert type */ false);
+    // search 到对应 word 的要求是, 返回的当前节点不是 null 且 它是 word 的终点
+    return !!cur && cur->is_word;
+  }
+
+  bool startsWith(string_view prefix) {
+    auto *cur = findNode(prefix, /* insert type */ false);
+    // startsWith 的要求是, 返回的当前节点不是 null 就可以了
+    return !!cur;
   }
 };
