@@ -122,6 +122,8 @@ private:
     _ptr = rhs._ptr;
     _ref = rhs._ref;
   }
+  // 注意此处: 移动构造中, 从左值做拷贝, 由于移动构造, 注意将原来的左值中的 _ptr
+  // 与 _ref 置为 nullptr 类型
   template <class Ty> void _move_construct_from(Ptr_base<Ty> &&rhs) noexcept {
     _copy_ptr_from(rhs);
     rhs._ptr = nullptr;
@@ -188,10 +190,12 @@ public:
 
   ~shared_ptr() { Base::sub_ref(); }
 
+  // 解引用
   T &operator*() noexcept { return *Base::_ptr; }
 
   const T &operator*() const noexcept { return *Base::_ptr; }
 
+  // 定义 ->
   T *operator->() { return &*Base::_ptr; }
 
   const T *operator->() const { return &*Base::_ptr; }
@@ -209,12 +213,12 @@ public:
   // 拷贝构造与拷贝赋值 以及从 shared_ptr 的转换
   weak_ptr(const weak_ptr &rhs) { Base::_weakly_construct_from(rhs); }
 
-  weak_ptr(const shared_ptr<T> &rhs) { Base::_weakly_construct_from(rhs); }
-
   weak_ptr &operator=(const weak_ptr &rhs) {
     weak_ptr(rhs).swap(*this);
     return *this;
   }
+
+  weak_ptr(const shared_ptr<T> &rhs) { Base::_weakly_construct_from(rhs); }
 
   // 移动构造与移动赋值
   weak_ptr(weak_ptr &&rhs) noexcept {
