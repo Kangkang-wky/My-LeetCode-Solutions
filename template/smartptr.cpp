@@ -40,7 +40,8 @@ template <typename T> struct RefCount {
       delete_this();
     }
   }
-
+  // 判断管理的对象是否被释放, 若引用计数为 0 返回 false, 否则引用计数+1, 返回
+  // true
   bool try_add_ref() {
     if (_uses == 0)
       return false;
@@ -168,8 +169,9 @@ public:
   // 拷贝构造与拷贝赋值
   shared_ptr(const shared_ptr &rhs) { Base::_copy_construct_from_shared(rhs); }
 
+  // 赋值运算符采用 copy & swap 策略 来做, 统一赋值运算符与移动运算符的实现路径
   shared_ptr &operator=(const shared_ptr &rhs) {
-    shared_ptr(rhs).swap(*this);
+    shared_ptr(rhs).swap(*this); // shared_ptr(rhs) 是一个临时对象
     return *this;
   }
 
@@ -254,18 +256,24 @@ template <class T> struct enable_shared_from_this {
 
 protected:
   constexpr enable_shared_from_this() noexcept : _weak_this_() {}
+
   enable_shared_from_this(const enable_shared_from_this &) noexcept {}
+
   enable_shared_from_this &operator=(const enable_shared_from_this &) noexcept {
     return *this;
   }
+
   ~enable_shared_from_this() = default;
 
 public:
   // 返回管理对象的 shared_ptr
   shared_ptr<T> shared_from_this() { return shared_ptr<T>(_weak_this_); }
+
+  // 返回管理 const 对象的 shared_ptr
   shared_ptr<T const> shared_from_this() const {
     return shared_ptr<const T>(_weak_this_);
   }
+
   friend class shared_ptr<T>;
 };
 
