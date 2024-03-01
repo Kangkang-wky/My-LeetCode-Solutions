@@ -169,7 +169,8 @@ public:
   // 拷贝构造与拷贝赋值
   shared_ptr(const shared_ptr &rhs) { Base::_copy_construct_from_shared(rhs); }
 
-  // 赋值运算符采用 copy & swap 策略 来做, 统一赋值运算符与移动运算符的实现路径
+  // 赋值运算符采用 copy and+ swap 策略 来做,
+  // 统一赋值运算符与移动运算符的实现路径
   shared_ptr &operator=(const shared_ptr &rhs) {
     shared_ptr(rhs).swap(*this); // shared_ptr(rhs) 是一个临时对象
     return *this;
