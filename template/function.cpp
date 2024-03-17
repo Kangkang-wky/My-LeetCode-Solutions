@@ -10,12 +10,14 @@ template <typename Ret, typename... Args> struct Function;
 //
 template <typename Ret, typename... Args> struct Function<Ret(Args...)> {
   // 通过父类指针指向子类 以及模板 来实现不同的类型
+  // Base 基类, 两个纯虚函数
   struct Base {
     virtual Base *clone() = 0;
 
     virtual Ret operator()(Args &&...args) = 0;
   };
 
+  // 子类Data 虚函数
   template <typename T> struct Data : Base {
     T func;
     Data(const T &t) : func(t) {}
