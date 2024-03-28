@@ -12,6 +12,10 @@
 
 // 链表问题 始终记得解决 pre  cur  next 三个指针
 // pre 返回已经操作完的， cur 返回正在操作的， next 返回接下要操作的指针
+
+// 画图, pre 记录已经操作好的节点的指针, cur 操作正要反转的节点
+// next 注意提前存好下一个要处理的节点
+
 class Solution {
 public:
   ListNode *reverseList(ListNode *head) {
