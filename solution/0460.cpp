@@ -11,3 +11,16 @@
 // 一是哈希表 + 平衡二叉树(set)
 
 // 一种是双哈希表
+
+// LFU
+// 算法是淘汰访问频次最低的数据，如果访问频次最低的数据有多条，需要淘汰最旧的数据。
+
+class LFUCache {
+private:
+public:
+  LFUCache(int capacity) {}
+
+  int get(int key) {}
+
+  void put(int key, int value) {}
+};
