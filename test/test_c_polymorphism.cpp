@@ -12,12 +12,12 @@
 // 创建一个Cat结构体指针，将该Cat结构体指针强转成Animal类型的指针，就可以直接调用Animal对象中的方法。
 
 typedef struct Animal {
-  void (*eat)(void *this_ptr);
+  void (*eat)(void *this_ptr); // 包了两个函数指针
   void (*drink)(void *this_ptr);
 } Animal;
 
 typedef struct Cat {
-  Animal base;
+  Animal base; // Cat has Animal 方式
   char name[16];
   void (*say)(void *this_ptr);
 } Cat;
@@ -48,6 +48,9 @@ Cat *CatConstruct() {
   Cat *cat = reinterpret_cast<Cat *>(1, sizeof(Cat));
   strcpy(cat->name, "cat");
   cat->say = Say;
+
+  // 这里有点像虚函数表
+  // 重写的 base->drink 与 base->eat
   cat->base.drink = CatDrink;
   cat->base.eat = CatEat;
   return cat;
