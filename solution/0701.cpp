@@ -41,4 +41,40 @@ public:
   }
 };
 
-// TODO:有空写一个迭代版本的插入
+// 迭代法插入部分
+// 迭代法插入考虑中序遍历插入即可
+class Solution3 {
+public:
+  TreeNode *insertIntoBST(TreeNode *root, int val) {
+
+    // 如果 root 为空指针, 直接插入即可
+    if (root == nullptr) {
+      // 开辟一份地址空间
+      TreeNode *node = new TreeNode(val);
+      return node;
+    }
+
+    // node 进行二分查找即可
+    TreeNode *node = root;     // root 不是 nullptr
+    while (node->val != val) { // 相等表示找到了
+
+      //
+      if (node->val < val) {
+        // assert
+        if (node->right == nullptr) {
+          // 找到插入即可
+          node->right = new TreeNode(val);
+        }
+        node = node->right;
+      } else {
+        // assert
+        if (node->left == nullptr) {
+          // 找到插入即可
+          node->left = new TreeNode(val);
+        }
+        node = node->left;
+      }
+    }
+    return root;
+  }
+};
