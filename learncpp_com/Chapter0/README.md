@@ -10,3 +10,5 @@
 目标文件通常命名为name.o或name.obj，其中name与生成它的 .cpp 文件的名称相同。
 
 例如，如果你的程序有 3 个 .cpp 文件，编译器将生成 3 个目标文件：
+
+![compiler](../../png/compiler.png)
