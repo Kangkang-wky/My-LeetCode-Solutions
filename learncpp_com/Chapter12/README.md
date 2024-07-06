@@ -217,3 +217,114 @@ int main()
 
 其他常见的按值传递类型：枚举类型和std::string_view。
 其他常见的按（const）引用传递类型：std::string、std::array和std::vector。
+
+## 12.7 — 指针简介
+
+引用必须初始化，指针不需要初始化（但应该初始化）。
+引用不是对象，指针才是。
+引用不能被重新放置（更改为引用其他内容），指针可以改变它们指向的内容。
+引用必须始终绑定到某个对象，指针可以指向虚无（我们将在下一课中看到一个例子）。
+引用是“安全的”（悬垂引用之外），指针本质上是危险的（我们也将在下一课中讨论这个问题）。
+
+## 12.10 — 通过地址传递
+
+三种方式：  按值传递（2.4 -- 函数形参和实参简介）和按引用传递（12.5 -- 按左值引用传递）。
+C++ 提供了第三种将值传递给函数的方法，称为按地址传递。使用按地址传递时，调用者不再提供对象作为参数，而是提供对象的地址（通过指针）
+
+```c++
+#include <iostream>
+#include <string>
+
+void printByValue(std::string val) // The function parameter is a copy of str
+{
+    std::cout << val << '\n'; // print the value via the copy
+}
+
+void printByReference(const std::string& ref) // The function parameter is a reference that binds to str
+{
+    std::cout << ref << '\n'; // print the value via the reference
+}
+
+void printByAddress(const std::string* ptr) // The function parameter is a pointer that holds the address of str
+{
+    std::cout << *ptr << '\n'; // print the value via the dereferenced pointer
+}
+
+int main()
+{
+    std::string str{ "Hello, world!" };
+
+    printByValue(str); // pass str by value, makes a copy of str
+    printByReference(str); // pass str by reference, does not make a copy of str
+    printByAddress(&str); // pass str by address, does not make a copy of str
+
+    return 0;
+}
+```
+
+按地址传递的时候一定要注意空指针的问题：这个地方非常的危险
+
+如果永远不应该将空指针传递给函数，则可以使用assert（我们在第9.6 课 - Assert 和 static_assert中介绍过）（因为断言旨在记录永远不会发生的事情）
+
+### 优先通过（const）引用传递
+
+请注意，上面示例中的函数print()不能很好地处理空值——它实际上只是中止了该函数。鉴于此，为什么允许用户传入空值呢？通过引用传递具有与通过地址传递相同的好处，而没有无意中取消引用空指针的风险。
+
+通过 const 引用传递比通过地址传递还有其他一些优点。
+
+首先，因为通过地址传递的对象必须有地址，所以只有左值可以通过地址传递（因为右值没有地址）。通过 const 引用传递更灵活，因为它可以接受左值和右值：
+
+```c++
+#include <iostream>
+
+void printByValue(int val) // The function parameter is a copy of the argument
+{
+    std::cout << val << '\n'; // print the value via the copy
+}
+
+void printByReference(const int& ref) // The function parameter is a reference that binds to the argument
+{
+    std::cout << ref << '\n'; // print the value via the reference
+}
+
+void printByAddress(const int* ptr) // The function parameter is a pointer that holds the address of the argument
+{
+    std::cout << *ptr << '\n'; // print the value via the dereferenced pointer
+}
+
+int main()
+{
+    printByValue(5);     // valid (but makes a copy)
+    printByReference(5); // valid (because the parameter is a const reference)
+    printByAddress(&5);  // error: can't take address of r-value
+
+    return 0;
+}
+```
+
+## 12.12 — 按引用返回和按地址返回
+
+
+### 不要通过引用返回非常量静态局部变量
+
+```c++
+#include <iostream>
+#include <string>
+
+const int& getNextId()
+{
+    static int s_x{ 0 }; // note: variable is non-const
+    ++s_x; // generate the next id
+    return s_x; // and return a reference to it
+}
+
+int main()
+{
+    const int& id1 { getNextId() }; // id1 is a reference
+    const int& id2 { getNextId() }; // id2 is a reference
+
+    std::cout << id1 << id2 << '\n';
+
+    return 0;
+}
+```
