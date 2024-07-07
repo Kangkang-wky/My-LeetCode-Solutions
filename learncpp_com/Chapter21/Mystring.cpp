@@ -16,10 +16,14 @@ public:
       std::copy_n(data, length,
                   m_data); // copy length elements of data into m_data
     }
+    std::cerr << "Constructor function" << std::endl;
   }
 
   // 拷贝构造函数
   MyString(const MyString &source);
+
+  // 移动构造函数
+  MyString(MyString &&arr);
 
   ~MyString() {
     m_length = 0;
@@ -27,7 +31,10 @@ public:
   }
 
   // Overloaded assignment
-  MyString &operator=(const MyString &str);
+  MyString &operator=(const MyString &str) noexcept;
+
+  // 移动赋值函数
+  MyString &operator=(MyString &&arr) noexcept;
 
   // 友元函数, 访问私有数据成员
   friend std::ostream &operator<<(std::ostream &out, const MyString &s);
@@ -48,6 +55,7 @@ std::ostream &operator<<(std::ostream &out, const MyString &s) {
 }
 
 // 拷贝构造函数
+
 MyString::MyString(const MyString &str) {
 
   // first we need to deallocate any value that this string is holding!
@@ -67,13 +75,17 @@ MyString::MyString(const MyString &str) {
   } else {
     m_data = nullptr;
   }
+
+  std::cerr << "Copy Constructor function" << std::endl;
 }
 
 // 拷贝赋值函数
-MyString &MyString::operator=(const MyString &str) {
+MyString &MyString::operator=(const MyString &str) noexcept {
   // self-assignment check,
-  if (this == &str)
+  if (this == &str) {
+    std::cerr << "copy assignment operator" << std::endl;
     return *this;
+  }
 
   // if data exists in the current string, delete it
   if (m_data) {
@@ -91,15 +103,55 @@ MyString &MyString::operator=(const MyString &str) {
     m_data = nullptr;
   }
 
+  std::cerr << "copy assignment operator" << std::endl;
+
   // return the existing object so we can chain this operator
   return *this;
 }
 
+// Move constructor
+MyString::MyString(MyString &&arr)
+    : m_data(arr.m_data), m_length(arr.m_length) {
+  arr.m_length = 0;
+  arr.m_data = nullptr;
+
+  std::cerr << "Move Constructor function" << std::endl;
+}
+
+// Move assignment
+MyString &MyString::operator=(MyString &&arr) noexcept {
+  // self-assignment check
+  if (&arr == this) {
+    std::cerr << "move assignment operator" << std::endl;
+    return *this;
+  }
+
+  delete[] m_data;
+
+  m_length = arr.m_length;
+  m_data = arr.m_data;
+  arr.m_length = 0;
+  arr.m_data = nullptr;
+
+  std::cerr << "move assignment operator" << std::endl;
+
+  return *this;
+}
+
 int main() {
-  MyString alex("Alex", 5); // Meet Alex
-  MyString employee;
-  employee = alex;       // Alex is our newest employee
-  std::cout << employee; // Say your name, employee
+  MyString alex("Alex", 5); // Constructor function
+  MyString employee1;       // Constructor function
+  employee1 = alex;         // copy assignment operator
+
+  MyString employee2 = alex; // Copy Constructor function
+
+  MyString employee3(alex); // Copy Constructor function
+
+  MyString employee4(std::move(alex)); // Move Constructor function
+
+  MyString employee5; // Constructor function
+
+  employee5 = std::move(alex); // move assignment operator
 
   return 0;
 }
