@@ -34,6 +34,7 @@ public:
     int max_size = alpha_hashmap[0];
     int lastline_element = 0;
 
+    // 把 for 循环改造成一个简单的 lambda 函数
     std::for_each(alpha_hashmap.begin(), alpha_hashmap.end(),
                   [&lastline_element, max_size](const auto &element) {
                     if (element == max_size) {
