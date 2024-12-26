@@ -309,3 +309,57 @@ namespace constants
 非内联 constexpr 变量具有内部链接。如果包含在多个翻译单元中，则每个翻译单元将获得自己的变量副本。这不违反 ODR，因为它们不会暴露给链接器。
 
 
+## 未命名和内联命名空间
+
+### 未命名（匿名）命名空间
+
+未命名命名空间（也称为匿名命名空间）是没有名称定义的命名空间，如下所示：
+
+```c++
+#include <iostream>
+
+namespace // unnamed namespace
+{
+    void doSomething() // can only be accessed in this file
+    {
+        std::cout << "v1\n";
+    }
+}
+
+int main()
+{
+    doSomething(); // we can call doSomething() without a namespace prefix
+
+    return 0;
+}
+```
+
+在未命名命名空间中声明的所有内容都被视为父命名空间的一部分。因此，即使函数doSomething()是在未命名命名空间中定义的，函数本身也可以从父命名空间（在本例中是全局命名空间）访问，这就是为什么我们可以在不使用任何限定符的doSomething()情况下进行调用main()。
+
+这可能使未命名命名空间看起来毫无用处。但未命名命名空间的另一个影响是，未命名命名空间内的所有标识符都被视为具有内部链接，这意味着未命名命名空间的内容无法在定义未命名命名空间的文件之外看到。
+
+对于函数来说，这实际上与将未命名命名空间中的所有函数定义为静态函数相同。以下程序实际上与上面的程序相同：
+
+```c++
+#include <iostream>
+
+static void doSomething() // can only be accessed in this file
+{
+    std::cout << "v1\n";
+}
+
+int main()
+{
+    doSomething(); // we can call doSomething() without a namespace prefix
+
+    return 0;
+}
+```
+
+未命名命名空间通常用于当您有大量内容需要确保只保留在给定翻译单元本地时，因为将这些内容聚集在单个未命名命名空间中比单独将所有声明标记为 更容易static。未命名命名空间还会将程序定义的类型（我们将在后面的课程中讨论）保留在翻译单元本地，而没有其他等效机制可以做到这一点。
+
+### 最佳实践
+
+当您有想要保留在翻译单元本地的内容时，请选择未命名的命名空间。
+
+避免在头文件中使用未命名的命名空间。
