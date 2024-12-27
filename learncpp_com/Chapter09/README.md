@@ -1,3 +1,66 @@
+## 9.3 — C++ 中的常见语义错误
+
+### 整数除法
+
+在下面的例子中，我们想要进行浮点除法，但是因为两个操作数都是整数，所以我们最终进行了整数除法：
+
+```c++
+#include <iostream>
+
+int main()
+{
+    int x{ 5 };
+    int y{ 3 };
+
+    std::cout << x << " divided by " << y << " is: " << x / y << '\n'; // integer division
+
+    return 0;
+}
+```
+
+### 意外的空语句
+
+注意不小心引入的 nullptr 空指针问题
+
+```c++
+#include <iostream>
+
+void blowUpWorld()
+{
+    std::cout << "Kaboom!\n";
+}
+
+int main()
+{
+    std::cout << "Should we blow up the world again? (y/n): ";
+    char c{};
+    std::cin >> c;
+
+    if (c == 'y');     // accidental null statement here
+        blowUpWorld(); // so this will always execute since it's not part of the if-statement
+
+    return 0;
+}
+```
+
+### 调用函数时忘记使用函数调用运算符
+
+```c++
+#include <iostream>
+
+int getValue()
+{
+    return 5;
+}
+
+int main()
+{
+    std::cout << getValue << '\n';
+
+    return 0;
+}
+```
+
 ## 9.6 — Assert 和 static_assert
 
 ### Assert

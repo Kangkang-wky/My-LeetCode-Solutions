@@ -4,7 +4,22 @@ C++17 引入了constexpr if 语句，该语句要求条件为常量表达式。 
 
 如果 constexpr 条件表达式求值为true，则整个 if-else 将被 true-statement 替换。如果 constexpr 条件表达式求值为false，则整个 if-else 将被 false-statement 替换（如果存在）或不替换（如果没有 else）。
 
-要使用 constexpr-if 语句, if constexpr 语句使用
+```c++
+#include <iostream>
+
+int main()
+{
+	constexpr double gravity{ 9.8 };
+
+	if constexpr (gravity == 9.8) // now using constexpr if
+		std::cout << "Gravity is normal.\n";
+	else
+		std::cout << "We are not on Earth.\n";
+
+	return 0;
+}
+```
+
 
 ## 8.12 —  =暂停（提早退出程序）
 
@@ -20,7 +35,7 @@ std::exit()执行一系列清理功能。首先，销毁具有静态存储持续
 
 关键见解
 
-std::exitmain()返回时被隐式调用。
+std::exit is called implicitly when main() returns.
 
 ### std::exit()不清理局部变量
 
