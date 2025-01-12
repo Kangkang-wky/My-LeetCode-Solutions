@@ -10,9 +10,9 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution1 {
 public:
-    ListNode* mergeKLists1(vector<ListNode*>& lists) {
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
         // lambda function for ListNode value comparasion
         // 注意此处因为 comparasion 部分是一个匿名函数对象, 需要传入以供比较
         if (lists.empty()) {
@@ -52,9 +52,9 @@ public:
     }
 };
 
-class Solution {
+class Solution2 {
 public:
-    ListNode* mergeKLists2(vector<ListNode*>& lists) {
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
 
         if (lists.empty()) {
             return nullptr;
@@ -94,4 +94,53 @@ public:
         return dummy->next;
 
     }
+};
+
+// 分治法, 采用分治的思想
+// 采用经典的 merge 算法即可
+class Solution3 {
+private:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* dummy = new ListNode();
+        ListNode* cur = dummy;
+        // 两个 list 都不为空
+        while(list1 != nullptr && list2 != nullptr) {
+            if (list1->val < list2->val) {
+                cur->next = list1;
+                list1 = list1->next;
+            }
+            else {
+                cur->next = list2;
+                list2 = list2->next;
+            }
+            cur = cur->next;
+        }
+
+        if (list1 == nullptr) { // list1 为空
+            cur->next = list2;
+        }
+        else {                  // list2 为空
+            cur->next = list1;
+        }
+        return dummy->next;
+    }
+
+    // 归并排序即可
+    ListNode* mergesort_KLists(vector<ListNode*>& lists, int i, int j) {
+        if (i == j) return lists[i];
+        int mid = i + (j - i) / 2;
+    
+        auto left = mergesort_KLists(lists, i, mid); // 合并左半部分
+        auto right = mergesort_KLists(lists, mid + 1, j); // 合并右半部分
+        return mergeTwoLists(left, right); // 最后把左半和右半合并
+    }
+
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if (lists.size() == 0) {
+            return nullptr;
+        }
+        return mergesort_KLists(lists, 0, lists.size() - 1);
+    }
+
 };
