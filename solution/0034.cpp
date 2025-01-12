@@ -1,12 +1,5 @@
 #include "../include/help.h"
 
-
-/**
- * @brief 以下为二分排序算法部分
- *         
- */
-
-// 算法为找到左边最后一个小于 target 的值, 找到右边第一个大于 target 的值
 // lower bound 二分查找写法
 // uppper bound 二分查找写法
 
@@ -36,10 +29,13 @@ class Solution {
 public:
     vector<int> searchRange(vector<int>& nums, int target) {
         int start = lower_bound(nums, target);
+
+        // 返回失败结果的可能条件
         if (start == nums.size() || nums[start] != target) {
             return {-1, -1}; // nums 中没有 target
         }
-        // 如果 start 存在，那么 end 必定存在
+        
+        // 其余情况应该需要返回成功的结果
         int end = lower_bound(nums, target + 1) - 1;
         return {start, end};
     }
