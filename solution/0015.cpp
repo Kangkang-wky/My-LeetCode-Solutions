@@ -2,62 +2,36 @@
 
 class Solution {
 public:
-  // 三数之和
-  vector<vector<int>> threeSum(vector<int> &nums) {
-    vector<vector<int>> res;
-
-    // 给数组进行排序
-    sort(nums.begin(), nums.end());
-
-    // 固定 k 的位置, 然后逐步移动 k, 然后 i, j 分别从
-    // [k, len(nums) - 1] 处分别移动
-
-    for (int k = 0; k < nums.size() - 2; k++) {
-      // > 0 不可能有符合条件的数值
-      if (nums[k] > 0) {
-        break;
-      }
-
-      // 这个地方有问题, 暂时先不纠结了
-      if (k > 0 & nums[k] == nums[k - 1]) {
-        continue;
-      }
-
-      int i = k + 1, j = nums.size() - 1;
-
-      while (i < j) {
-        int sum = nums[k] + nums[i] + nums[j];
-
-        if (sum > 0) {
-          j--;
-
-          while (i < j && nums[j] == nums[j + 1]) {
-            j--;
-          }
-
-        } else if (sum < 0) {
-          i++;
-
-          while (i < j && nums[i] == nums[i - 1]) {
-            i++;
-          }
-
-        } else {
-          vector<int> temp{k, i, j};
-          res.emplace_back(temp);
-          i++;
-          j--;
-
-          while (i < j && nums[j] == nums[j + 1]) {
-            j--;
-          }
-
-          while (i < j && nums[i] == nums[i - 1]) {
-            i++;
-          }
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> res;        
+        
+        // 枚举 a, 固定第一个数
+        for (int first = 0; first < n; ++first) {
+            if (first > 0 && nums[first] == nums[first - 1]) {    //  优化当前的搜索, 重复数字, 排除 
+                continue;
+            }
+            // c 对应的指针初始指向数组的最右端
+            int third = n - 1;
+            int target = - nums[first];
+            // 枚举 b
+            for (int second = first + 1; second < n; ++second) {
+                if (second > first + 1 && nums[second] == nums[second - 1]) {     // 优化当前的搜索, 重复数字, 排除
+                    continue;
+                }
+                // 需要保证 b 的指针在 c 的指针的左侧, c 指向的数太大, 不断左移
+                while (second < third && nums[second] + nums[third] > target) {
+                    --third;
+                }
+                if (second == third) {    // 优化当前的搜索, 如果 b 的坐标 == c 的坐标了, b 超过 c, 剪枝
+                    break;
+                }
+                if (nums[second] + nums[third] == target) {
+                    res.push_back({nums[first], nums[second], nums[third]});
+                }
+            }
         }
-      }
+        return res;
     }
-    return res;
-  }
 };
