@@ -29,8 +29,8 @@ public:
         }
 
         int res = rootSum(root, targetSum);
-        res += pathSum(root->left, targetSum);
-        res += pathSum(root->right, targetSum);
+        res += pathSum(root->left, targetSum);  // 以当前根节点的左节点搜索
+        res += pathSum(root->right, targetSum); // 以当前根节点的右节点搜索
         return res;
     }
 };
