@@ -13,8 +13,8 @@ public:
         vector<int> left(n, -1);
         stack<int> st;
         
-        // st 维护单调栈, left 记录左边第一个比自己小的, 单调栈的内部维护逻辑是
-        // 维护栈内单调递增
+        // st 维护单调栈, 维护的是一个单调递增栈
+        // left 记录的是左边第一个比自己小的
         for (int i = 0; i < n; i++) {
             while (!st.empty() && heights[i] <= heights[st.top()]) {
                 st.pop();
@@ -39,6 +39,11 @@ public:
             }
             st.push(i);
         }
+
+        // left 是左边第一个比自己小的
+        // right 是右边第一个比自己大的
+        // 那么中间的 [left + 1, right - 1] 就是我们需要的矩形的大小
+
 
         int res = 0;
         for (int i = 0; i < n; i++) {
