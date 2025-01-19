@@ -1,15 +1,15 @@
 ## 算法
 
 三大方法：
-分治
-贪心
-动态规划
+分治 divide and conquer
+贪心 greedy
+动态规划 dynamic programming
 
-深搜、广搜
-二分查找
+深搜、广搜 depth-first search、 breadth-first search
+二分查找  binary search
 
-归并排序
-快速选择
+归并排序 merge-sort
+快速选择 quick-select
 
 
 ## 基础数据结构
