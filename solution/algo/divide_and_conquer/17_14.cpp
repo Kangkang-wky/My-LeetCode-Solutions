@@ -24,6 +24,7 @@ public:
 // 局部排序
 // 结果正确, bubble 注意两个问题: 一是 i 的范围代表 top_k, 二是注意 j
 // 的范围和顺序决定 arr 数组 top_k 的那些位置在哪里
+// 冒泡排序
 class Solution2 {
 public:
   // bubble_sort
@@ -45,7 +46,7 @@ public:
 
 // 局部排序
 // 快速排序算法, 比较有意思的点是对于 pivot 基准的选择
-// 换一种写法 quicksort 的写法以前写的都是填坑法, 这次换成划分法写婴喜爱
+// 换一种写法 quicksort 的写法以前写的都是填坑法, 这次换成划分法写
 // 将[left + 1, right]分成3个部分:
 // [left + 1, le)部分所有元素都 <= pivot
 // [le, ge]没有看到的部分

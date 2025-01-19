@@ -1,5 +1,12 @@
 #include "../include/help.h"
 
+
+/**
+ * @brief 三数之和, a, b, c 固定第一个数, 然后, 将第二, 三个数作为双指针
+ * 
+ */
+
+
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {

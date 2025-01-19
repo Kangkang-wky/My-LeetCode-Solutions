@@ -1,9 +1,7 @@
 #include "../include/help.h"
 
-class Solution {
-public:
-  void nextPermutation(vector<int> &nums) {
-    // 贪心算法
+/**
+ * @brief     // 贪心算法
     // 经典对 swap 的讨论
     // 要求从小到大， 分析要从原数组中找两个数字，要求
     // (1) 左边的数字小于右边的数字     l  r
@@ -13,7 +11,12 @@ public:
     // 可以重排此时右边的大树交换后 大数右侧的序列从而让其保证变大的程度最小**
 
     // 对于此题与交换两个数字不同要增加的是第四点
+ * 
+ */
 
+class Solution {
+public:
+  void nextPermutation(vector<int> &nums) {
     // 双指针解题
     // i 表示左边的数字  j 表示右边的数字
 
