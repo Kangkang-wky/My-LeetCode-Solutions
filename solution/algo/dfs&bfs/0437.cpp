@@ -10,7 +10,7 @@ private:
             return 0;
         }
         int res = 0;
-        if (root->val == targetSum) {
+        if (root->val == targetSum) {       // 说明搜索到了一个
             res++;
         }
 
@@ -24,11 +24,11 @@ private:
 
 public:
     int pathSum(TreeNode* root, int targetSum) {
-        if (root != nullptr) {
+        if (root == nullptr) {
             return 0;
         }
 
-        int res = rootSum(root, targetSum);
+        int res = rootSum(root, targetSum);     // 以当前根节点的搜索
         res += pathSum(root->left, targetSum);  // 以当前根节点的左节点搜索
         res += pathSum(root->right, targetSum); // 以当前根节点的右节点搜索
         return res;
