@@ -41,6 +41,7 @@ public:
                 direction_index = (direction_index + 1) % 4;
             }
 
+            // 碰壁开始尝试新的 row 和 column
             row += directions[direction_index][0];
             column += directions[direction_index][1];
     
