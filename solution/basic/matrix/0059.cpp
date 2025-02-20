@@ -43,20 +43,20 @@ public:
         {   
             // 按照四个方向分别进行遍历即可
             for(int i = left; i <= right; ++i) res.push_back(matrix[up][i]); //向右移动直到最右
-            ++up;
-            if(++up > down) break;      //重新设定上边界，若上边界大于下边界，则遍历遍历完成，下同
+            ++up;                       // 重新设定上边界
+            if(up > down) break;        // 若上边界大于下边界，则遍历遍历完成，下同
 
             for(int i = up; i <= down; ++i) res.push_back(matrix[i][right]); //向下
-            --right;
-            if(--right < left) break;   //重新设定有边界
+            --right;                    //重新设定右边界
+            if(right < left) break;   
             
             for(int i = right; i >= left; --i) res.push_back(matrix[down][i]); //向左
-            --down;
-            if(--down < up) break;      //重新设定下边界
+            --down;                     //重新设定下边界
+            if(down < up) break;
             
             for(int i = down; i >= up; --i) res.push_back(matrix[i][left]); //向上
-            ++left;
-            if(++left > right) break;   //重新设定左边界
+            ++left;                     //重新设定左边界
+            if(left > right) break;
         }
         return res;
     }

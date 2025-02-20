@@ -34,6 +34,8 @@ public:
 // double pointer
 // 很容易想到的一点是计算每个柱子左边高和右边高是有计算冗余的
 // 可以遍历两遍存储下来
+// 一是从左到右遍历左边的柱子, 统计到左边的最高点
+// 二是从右到左遍历右边的柱子, 统计到右边的最高点
 class Solution2 {
 public:
   int trap(vector<int> &height) {
