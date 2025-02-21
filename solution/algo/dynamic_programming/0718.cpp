@@ -1,6 +1,9 @@
 #include "../include/help.h"
 
-// 版本一
+// dp 数组初始化 0
+// dp 递推公式求解 dp[i][j] 分别表示以 i, j 结尾的公共子数组的长度
+
+
 class Solution {
 public:
     int findLength(vector<int>& nums1, vector<int>& nums2) {
