@@ -1,7 +1,7 @@
 #include "../include/help.h"
 
 /**
- * @brief 
+ * @brief dp 问题可以分为背包问题和
  * 
  */
 
@@ -15,6 +15,8 @@ public:
 
         // 需要注意这里处理 dp 数组初始化的细节
         // 处理好循环顺序, 并设置成 dp[0][1] = 1
+
+        dp[0][1] = 1;
         
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
