@@ -17,7 +17,7 @@ public:
             ++hashmap[c];
         }
 
-        queue<pair<char, int>> que;         // 用于存储当前窗口内的字符及其索引, 窗口一前一后一定是  
+        queue<pair<char, int>> que;         // 用于存储当前窗口内的字符及其索引, 窗口一前一后一定是 t 中途的字符  
         int min_val = numeric_limits<int>::max();  
         pair<int, int> res = { 0, 0 };  
 
