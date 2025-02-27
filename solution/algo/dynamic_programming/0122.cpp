@@ -2,6 +2,15 @@
 
 // 需要特别注意 prices[i] 的值
 
+/**
+ * @brief 股票买卖的最佳时机 II
+ *        dp[i][0] 表示第 i 天不持有股票
+ *        dp[i][1] 表示第 i 天持有股票
+ *
+ */
+
+
+
 class Solution {
 public:
   int maxProfit(vector<int> &prices) {
