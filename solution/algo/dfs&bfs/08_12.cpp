@@ -1,7 +1,7 @@
 #include "../include/help.h"
 
 /**
- * @brief n 皇后问题
+ * @brief n 皇后问题: 注意对角线部分如何处理，如正对角线和反对角线, 正对角线行列相减, 反对角线行列相加
  * 
  */
 
@@ -24,7 +24,7 @@ public:
                 diagnoals_1.insert(step - i);
                 diagnoals_2.insert(step + i);
                 
-                dfs(step + 1, temp, res_num, hashmap, diagnoals_1, diagnoals_2, n);
+                dfs(step + 1, temp, res_num, hashmap, diagnoals_1, diagnoals_2, n);     
                 
                 diagnoals_1.erase(step - i);
                 diagnoals_2.erase(step + i);
