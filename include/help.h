@@ -17,6 +17,7 @@
 #include <vector>
 #include <functional>
 #include <map>
+#include <cassert>
 
 // Definition for a list node.
 
