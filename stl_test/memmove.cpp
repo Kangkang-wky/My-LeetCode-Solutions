@@ -1,5 +1,14 @@
 #include "../include/help.h"
 
+/**
+ * @brief memory move 操作
+ * 
+ * @param dest 
+ * @param src 
+ * @param num 
+ * @return void* 
+ */
+
 void* my_memmove(void* dest, void* src, size_t num)
 {
     // 判断 dest 与 src 是否为 NULL
@@ -12,8 +21,9 @@ void* my_memmove(void* dest, void* src, size_t num)
 	if (dest < src)
 	{
 		// 前->后
-		while (num--) // 即模拟实现 memcpy 的函数代码
+		while (num--)
 		{
+            // 即模拟实现 memcpy 的函数代码
 			*(reinterpret_cast<char*>(dest)) = *(reinterpret_cast<char*>(src));
 			dest = reinterpret_cast<char*>(dest) + 1;
 			src = reinterpret_cast<char*>(src) + 1;
@@ -24,7 +34,8 @@ void* my_memmove(void* dest, void* src, size_t num)
 		// 后->前
 		while (num--)
 		{
-			*(reinterpret_cast<char*>(dest) + num) = *(reinterpret_cast<char*>(src) + num); // 每次 num--，实现后->前拷贝
+            // 每次 num--，实现后->前拷贝
+			*(reinterpret_cast<char*>(dest) + num) = *(reinterpret_cast<char*>(src) + num); 
 		}
 	}
 	return ret;
