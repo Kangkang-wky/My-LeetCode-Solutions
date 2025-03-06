@@ -38,14 +38,12 @@ class Solution2 {
 public:
     int lengthOfLongestSubstring(string s) {
         std::unordered_set<char> hashmap;
-        int res = 0;
+        int res = 0;        // 从 0 开始统计, 防止错误
         int i = 0;
-
-        // 控制 j 从 -1 开始
+        // 控制 j 从 -1 开始, 相当于一开始右指针在我们左指针的左侧
         int j = -1;
-        
-        int str_size = s.size();
 
+        int str_size = s.size();
         while (j + 1 < str_size && i < str_size) {
             while (!hashmap.count(s[j + 1]) && j + 1 < str_size) {     // 找不到插入
                 hashmap.insert(s[j + 1]);
