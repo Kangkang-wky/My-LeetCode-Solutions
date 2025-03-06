@@ -7,7 +7,7 @@
  */
 
 
-class Solution {
+class Solution1 {
 public:
     int lengthOfLongestSubstring(string s) {
         // 哈希集合，记录每个字符是否出现过
@@ -30,5 +30,35 @@ public:
             ans = max(ans, rk - i + 1);
         }
         return ans;
+    }
+};
+
+
+class Solution2 {
+public:
+    int lengthOfLongestSubstring(string s) {
+        std::unordered_set<char> hashmap;
+        int res = 0;
+        int i = 0;
+
+        // 控制 j 从 -1 开始
+        int j = -1;
+        
+        int str_size = s.size();
+
+        while (j + 1 < str_size && i < str_size) {
+            while (!hashmap.count(s[j + 1]) && j + 1 < str_size) {     // 找不到插入
+                hashmap.insert(s[j + 1]);
+                j++;
+            }
+            // str[j] 产生冲突了 与其他产生冲突了
+            int hashmap_size = hashmap.size();
+            res = std::max(res, hashmap_size);
+            // 左指针右移, 开始
+            // 窗口移动
+            hashmap.erase(s[i]);  // 移除收字符继续循环
+            i++;
+        }
+        return res;
     }
 };
