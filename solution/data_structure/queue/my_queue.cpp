@@ -144,8 +144,8 @@ public:
             p=p->next;
             delete q;
         }
-        front=NULL;
-        rear=NULL;
+        front = NULL;
+        rear = NULL;
     }
 
     //队列是否为空
