@@ -1,6 +1,6 @@
 #include "../include/help.h"
 
-class Solution {
+class Solution1 {
 public:
     ListNode* deleteDuplicates(ListNode* head) {
         
@@ -21,5 +21,28 @@ public:
             }
         }
         return dummy;
+    }
+};
+
+class Solution2 {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+
+        if (head == nullptr || head->next == nullptr) {
+            return head;
+        }
+        // 如果 head->val != head->next->val
+        if (head->val != head->next->val) {
+            head->next = deleteDuplicates(head->next);
+        } 
+        else {      // 碰到相等的情况
+            ListNode* move = head->next;
+            while (move->next && head->val == move->next->val) {
+                move = move->next;
+            }
+            return deleteDuplicates(move);
+        }
+        return head;
+
     }
 };
