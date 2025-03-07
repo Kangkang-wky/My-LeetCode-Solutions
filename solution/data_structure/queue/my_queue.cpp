@@ -136,7 +136,7 @@ public:
     }
     
     //析构函数
-    ~ MyQueue_list() {
+    ~MyQueue_list() {
         QueueNode* p, *q;
         p=front;
         while(p) {
@@ -161,7 +161,7 @@ public:
         if(p) {
             //申请结点成功
             p->data=data;
-            if(rear) {
+            if(rear) {      // 查询 rear 节点是否非空
                 rear->next=p;
                 rear=p;
             } 
