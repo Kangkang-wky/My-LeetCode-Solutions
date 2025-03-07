@@ -1,5 +1,10 @@
 #include "../include/help.h"
 
+/**
+ * @brief 全排列
+ * 
+ */
+
 class Solution {
 private:
   vector<bool> visit_num;

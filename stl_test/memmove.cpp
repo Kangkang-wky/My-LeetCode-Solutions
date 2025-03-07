@@ -40,3 +40,31 @@ void* my_memmove(void* dest, void* src, size_t num)
 	}
 	return ret;
 }
+
+/**
+ * @brief memory copy 操作
+ * 
+ * @param dest 
+ * @param src 
+ * @param num 
+ * @return void* 
+ */
+
+
+void* my_memcpy(void* dest, const void* src, size_t num) {
+	assert(dest && src);
+
+	int i = 0;
+	
+	void* ret = dest;
+	// num单位为字节（而非元素)
+	// 注意此处是字节数量
+	while (num--) {
+		// 逐字节拷贝
+		*((char*)dest) = *((char*)src);
+		src = (char*)src + 1;
+		dest = (char*)dest + 1;
+	}
+	// 返回拷贝的目标空间的起始地址
+	return ret;
+}
