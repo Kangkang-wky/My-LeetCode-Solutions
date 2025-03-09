@@ -12,10 +12,6 @@ public:
         int n = t.size();
 
         int j_index = 0;
-
-
-
-
         for (int i = 0; i < n; i++) {
             
             if (t[i] == s[j_index] && j_index < m) {
