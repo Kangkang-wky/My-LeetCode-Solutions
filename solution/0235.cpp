@@ -7,3 +7,30 @@
     满足 x 是 p、q 的祖先且 x 的深度尽可能大（一个节点也可以是它自己的祖先）。”
  * 
  */
+
+
+/**
+ * @brief 因为是二叉搜索树, 所以有 左 < 中 < 右
+ * 
+ */
+
+
+
+class Solution {
+public:
+   TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        TreeNode* ancestor = root;
+        while (true) {
+            if (p->val < ancestor->val && q->val < ancestor->val) {
+                ancestor = ancestor->left;
+            }
+            else if (p->val > ancestor->val && q->val > ancestor->val) {
+                ancestor = ancestor->right;
+            }
+            else {
+                break;
+            }
+        }
+        return ancestor;   
+   }
+};
