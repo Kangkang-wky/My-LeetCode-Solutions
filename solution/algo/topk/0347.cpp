@@ -64,11 +64,11 @@ public:
             if (q.size() == k) {
                 if (q.top().second < count) {
                     q.pop();
-                    q.emplace(num, count);
+                    q.emplace(make_pair(num, count));
                 }
             } 
             else {
-                q.emplace(num, count);
+                q.emplace(make_pair(num, count));
             }
         }
         vector<int> res;
