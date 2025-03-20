@@ -12,7 +12,7 @@
 //
 #include "../include/help.h"
 
-class Solution {
+class Solution1 {
 public:
   int maxProduct(vector<int> &nums) {
 
@@ -27,6 +27,30 @@ public:
           min(dp_min[i - 1] * nums[i], min(dp_max[i - 1] * nums[i], nums[i]));
     }
     int res = *max_element(dp_max.begin(), dp_max.end());
+    return res;
+  }
+};
+
+class Solution2 {
+public:
+  int maxProduct(vector<int> &nums) {
+
+    // 初始化的时候拷贝即可, 注意 dp_max[0] 与 dp_min[0] 的值即可, 注意正负属性
+    vector<int> dp_max(nums);
+    vector<int> dp_min(nums);
+
+    for (int i = 1; i < nums.size(); i++) {
+      dp_max[i] =
+          max(dp_max[i - 1] * nums[i], max(dp_min[i - 1] * nums[i], nums[i]));
+      dp_min[i] =
+          min(dp_min[i - 1] * nums[i], min(dp_max[i - 1] * nums[i], nums[i]));
+    }
+    int res = dp_max[0];
+
+    for (int i = 0; i < dp_max.size(); i++) {
+      res = max(res, dp_max[i]);
+    }
+
     return res;
   }
 };
