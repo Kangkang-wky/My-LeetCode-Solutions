@@ -17,7 +17,7 @@
 
 class Solution {
 private: 
-    bool check_num(string num) {
+    bool check_num(string num) {        // 合法性检查
         int sum = 0;
         for (int i = 0; i < num.size(); i++) {
             sum = sum * 10 + num[i] - '0';
