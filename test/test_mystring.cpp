@@ -43,7 +43,7 @@ public:
     }
     return *this;
   }  // 移动赋值运算符重载
-  MyString &operator=(MySt+ring &&str) noexcept {
+  MyString &operator=(MyString &&str) noexcept {
     if (this != &str) {
       _len = str._len;
       _data = str._data;
